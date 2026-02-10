@@ -81,7 +81,7 @@ function setup() {
   
   intensitySlider = createSlider(0, 100, 33)
   intensitySlider.style('transform', 'rotate(270deg)');
-  intensitySlider.position(width - 225, intensitySlider.width + 257)
+  intensitySlider.position(width - 209.5, intensitySlider.width + height / 2 - 8)
   
   ResetElectronsButton = createButton("Reset Electrons");
   ResetElectronsButton.mousePressed(generateElectrons);
@@ -92,7 +92,7 @@ function setup() {
   InfiniteElectronsCheck.position(10, 85)
   
   SwitchPhotonFormButton = createButton("Switch Photon Visual Form")
-  SwitchPhotonFormButton.position(width -  SwitchPhotonFormButton.width - 7.5, height - 60);
+  SwitchPhotonFormButton.position(width - SwitchPhotonFormButton.width - 7.5, height - 60);
   SwitchPhotonFormButton.mousePressed(() => { 
     photonWaveForm = !photonWaveForm;
   });
@@ -136,7 +136,14 @@ function current() {
     //current = frequency / currentElement.thresholdF
   }
   fill(255)
+  stroke(255, 255, 0)
+  strokeWeight(3)
+  rect(8, height - 31, 160, 24)
+  noStroke();
+  fill(0)
+  textSize(24)
   text(`Current: ${current}`, 10, height - 10)
+  textSize(12)
 }
 
 let visibleFrequencies = [400,790];
@@ -324,7 +331,7 @@ function light() {
   }
   fill(255)
   noStroke();
-  text("Photon Speed", width - 250, height - 10)
+  text("Photon Speed", width - PhotonSpeedSlider.width - 100, height - 10)
 }
 
 
@@ -334,13 +341,21 @@ const plateWidth = 150;
 const plateHeight = 400;
 
 let electronSpeed = 20;
+
+let helixColors = [
+  "red",
+  "orange",
+  "blue",
+  "green",
+  "black"
+]
 function plate() {
   let atomicNumber = currentElement.atomicNum
   noFill()
   
   if (PlateSelectMenu.selected() == "Double Helix") {
     strokeWeight(20)
-    stroke("#506587")
+    stroke("#6B7C98")
     beginShape();
     for (let i = 0; i <= plateHeight; i++) {
       let x = platex + 10 + plateWidth / 2 + sin(i / plateHeight * 5 * PI + PI / 2 + PI) * plateWidth / 2
@@ -348,7 +363,7 @@ function plate() {
       vertex(x, y)
     }
     endShape()
-    stroke("#7291c4")
+    stroke("#9CB2D5")
     beginShape();
     for (let i = 0; i <= plateHeight; i++) {
       let x = platex + 10 + plateWidth / 2 + sin(i / plateHeight * 5 * PI + PI / 2) * plateWidth / 2
@@ -356,7 +371,20 @@ function plate() {
       vertex(x, y)
     }
     endShape()
-    
+    strokeWeight(3)
+    let colorCounter = 0
+    for (let j = 1; j < 21; j++) {
+      i = j * plateHeight / 21
+      let x1 = platex + 10 + plateWidth / 2 + sin(i / plateHeight * 5 * PI + PI / 2) * plateWidth / 2
+      let x2 = platex + 10 + plateWidth / 2 + sin(i / plateHeight * 5 * PI + PI / 2 + PI) * plateWidth / 2
+      let y = platey + i
+      stroke(helixColors[colorCounter])
+      colorCounter = (colorCounter + 1) % helixColors.length
+      line(x1, y, x1 + (x2 - x1) / 2, y)
+      stroke(helixColors[colorCounter])
+      colorCounter = (colorCounter + 1) % helixColors.length
+      line(x1 + (x2 - x1) / 2, y, x2, y)
+    }
     strokeWeight(1)
     
     if (infiniteElectrons && electrons.length < atomCount * atomicNumber) {
