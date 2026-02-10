@@ -125,8 +125,9 @@ function draw() {
   
   plate();
   
-  current();
-  
+  if (PlateSelectMenu.selected() != "Double Helix") {
+    current();
+  }
 }
 
 function current() {
