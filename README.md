@@ -1,2 +1,2 @@
 # Photoelectric Effect
-Physics Simulation for Physics class
+Simulation for Physics class
